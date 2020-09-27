@@ -13,14 +13,20 @@ import AddExperience from "./components/profile-forms/AddExperience";
 import AddEducation from "./components/profile-forms/AddEducation";
 import Profiles from "./components/profiles/Profiles";
 import Profile from "./components/profile/Profile";
+
+import Posts from "./components/posts/Posts";
+import Post from "./components/post/Post";
 import PrviateRoute from "./components/routing/PrviateRoute";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
 import { loadUser } from "./actions/auth";
+import { LOGOUT } from "./actions/types";
+
 import "./App.css";
 import setAuthToken from "./utils/setAuthToken";
 
+// check for token in LS
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -28,7 +34,12 @@ if (localStorage.token) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
+    // log user out from all tabs if they log out in one tab
+    window.addEventListener("storage", () => {
+      if (!localStorage.token) store.dispatch({ type: LOGOUT });
+    });
   }, []);
+
   return (
     <Provider store={store}>
       <Router>
@@ -63,6 +74,8 @@ const App = () => {
               />
               <Route exact path="/profiles" component={Profiles} />
               <Route exact path="/profile/:id" component={Profile} />
+              <PrviateRoute exact path="/posts" component={Posts} />
+              <PrviateRoute exact path="/posts/:id" component={Post} />
             </Switch>
           </section>
         </Fragment>

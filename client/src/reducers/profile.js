@@ -30,6 +30,7 @@ export default function (state = initalState, action) {
         ...state,
         profiles: payload,
         loading: false,
+        profile: null,
       };
     case PROFILE_ERROR:
       return {
