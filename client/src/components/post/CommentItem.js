@@ -6,7 +6,7 @@ import Moment from "react-moment";
 
 const CommentItem = ({
   postId,
-  comment: { text, name, avatar, user, date },
+  comment: { _id, text, name, avatar, user, date },
   auth,
 }) => {
   return (
